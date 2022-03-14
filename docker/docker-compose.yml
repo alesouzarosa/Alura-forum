@@ -1,0 +1,17 @@
+version: '2'
+services:
+  forum:
+    image: alura/forum:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "prod"
+      FORUM_DATABASE_URL: 'jdbc:h2:mem:alura-forum'
+      FORUM_DATABASE_USERNAME: 'sa'
+      FORUM_DATABASE_PASSWORD: ''
+      FORUM_JWT_SECRET: '123456'
+
+
+
+
+
