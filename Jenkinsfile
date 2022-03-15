@@ -4,7 +4,7 @@ pipeline {
         pollSCM('H * * * *')
     }
     tools {
-        maven 'Maven-3.6.0'
+        maven 'Maven-3.10.0'
     }
 //    options {
 //        buildDiscarder(logRotator(numToKeepStr: '1'))
@@ -20,7 +20,7 @@ pipeline {
 
         stage('build') {
             steps {
-                withMaven('Maven-3.6.0') {
+                withMaven('Maven-3.10.0') {
                     sh "mvn clean package -DskipTests"
                 }
             }
