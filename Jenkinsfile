@@ -3,9 +3,9 @@ pipeline {
     triggers {
         pollSCM('* * * * *')
     }
-//    tools {
-//        maven 'Maven-3.6.0'
-//    }
+    tools {
+        maven 'Maven-3.6.0'
+    }
 //    options {
 //        buildDiscarder(logRotator(numToKeepStr: '1'))
 //    }
