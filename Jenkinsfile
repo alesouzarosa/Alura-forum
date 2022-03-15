@@ -35,7 +35,7 @@ pipeline {
                     env.POM_ARTIFACTID = pom.artifactId
                     env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
 
-                    sh 'echo $USER'
+                    sh 'env'
 
                     def imageName = "${POM_ARTIFACTID}:${TAG_VERSION}"
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
