@@ -1,21 +1,21 @@
 pipeline {
     agent any
     triggers {
-        pollSCM('* * * * *')
+        pollSCM('H * * * *')
     }
-//    tools {
-//        maven 'Maven-3.6.0'
-//    }
+    tools {
+        maven 'Maven-3.6.0'
+    }
 //    options {
 //        buildDiscarder(logRotator(numToKeepStr: '1'))
 //    }
     stages {
         stage('build') {
-           // steps {
-                withMaven {
+            steps {
+                withMaven('Maven-3.6.0') {
                     sh "mvn clean package -DskipTests"
                 }
-           // }
+            }
         }
 
 
