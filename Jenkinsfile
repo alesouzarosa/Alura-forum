@@ -3,15 +3,13 @@ pipeline {
     triggers {
         pollSCM('H/2 * * * *')
     }
-    tools {
-        maven 'Maven-3.6.0'
-    }
+//    tools {
+//        maven 'Maven-3.6.0'
+//    }
 //    options {
 //        buildDiscarder(logRotator(numToKeepStr: '1'))
 //    }
     stages {
-
-
         stage('build') {
             steps {
                 withMaven(maven: 'Maven-3.6.0') {
@@ -23,7 +21,7 @@ pipeline {
 
         stage('image') {
             //builda a imagem do projeto
-            script {
+            step {
                 pom = readMavenPom file: 'pom.xml'
                 env.POM_ARTIFACTID = pom.artifactId
                 env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
@@ -36,8 +34,10 @@ pipeline {
         }
 
         stage('deploy') {
-            dir('docker') {
-                sh 'docker-compose up -d'
+            step {
+                dir('docker') {
+                    sh 'docker-compose up -d'
+                }
             }
         }
     }
