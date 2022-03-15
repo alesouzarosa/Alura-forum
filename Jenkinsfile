@@ -4,7 +4,7 @@ pipeline {
         pollSCM('H * * * *')
     }
     tools {
-        maven 'Maven-3.6.0'
+        maven 'maven-3.6.0'
     }
 //    options {
 //        buildDiscarder(logRotator(numToKeepStr: '1'))
