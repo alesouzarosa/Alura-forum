@@ -36,10 +36,12 @@ pipeline {
                     env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
 
                     def imageName = "${POM_ARTIFACTID}:${TAG_VERSION}"
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        def image = docker.build(imageName, "--build-arg POM_ARTIFACTID=${POM_ARTIFACTID} .")
+                        image.push()
+                    }
 
-                    def image = docker.build(imageName, "--build-arg POM_ARTIFACTID=${POM_ARTIFACTID} .")
-                    image.push()
-                    //sh "docker build -t ${image} ."
+                        //sh "docker build -t ${image} ."
 
                 }
             }
