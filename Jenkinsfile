@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                withMaven() {
+                withMaven(maven: 'Maven-3.6.0') {
                     sh "mvn clean package -DskipTests"
                 }
             }
