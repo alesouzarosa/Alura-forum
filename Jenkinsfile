@@ -37,6 +37,8 @@ pipeline {
 
                     sh 'env'
 
+                    sh 'docker --version'
+
                     def imageName = "${POM_ARTIFACTID}:${TAG_VERSION}"
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         def image = docker.build(imageName, "--build-arg POM_ARTIFACTID=${POM_ARTIFACTID} .")
