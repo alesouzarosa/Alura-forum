@@ -35,9 +35,11 @@ pipeline {
                     env.POM_ARTIFACTID = pom.artifactId
                     env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
 
-                    def image = "${POM_ARTIFACTID}:${TAG_VERSION}"
+                    def imageName = "${POM_ARTIFACTID}:${TAG_VERSION}"
 
-                    sh "docker build -t ${image} ."
+                    def image = docker.build(imageName, "--build-arg POM_ARTIFACTID=${POM_ARTIFACTID} .")
+                    image.push()
+                    //sh "docker build -t ${image} ."
 
                 }
             }
