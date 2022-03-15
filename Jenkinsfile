@@ -21,7 +21,7 @@ pipeline {
 
         stage('image') {
             //builda a imagem do projeto
-            steps {
+            script {
                 pom = readMavenPom file: 'pom.xml'
                 env.POM_ARTIFACTID = pom.artifactId
                 env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
