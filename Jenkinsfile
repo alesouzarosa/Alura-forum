@@ -1,36 +1,47 @@
+pipeline {
+    agent any
+    triggers {
+        pollSCM('H/2 * * * *')
+    }
+    tools {
+        maven 'Maven-3.6.0'
+    }
+//    options {
+//        buildDiscarder(logRotator(numToKeepStr: '1'))
+//    }
+    stages {
 
-stages {
 
-    stage('build') {
-        steps {
-            withMaven(maven: 'Maven-3.6.0') {
-                sh "mvn clean package -DskipTests"
+        stage('build') {
+            steps {
+                withMaven(maven: 'Maven-3.6.0') {
+                    sh "mvn clean package -DskipTests"
+                }
+            }
+        }
+
+
+        stage('image') {
+            //builda a imagem do projeto
+            script {
+                pom = readMavenPom file: 'pom.xml'
+                env.POM_ARTIFACTID = pom.artifactId
+                env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
+
+                def image = "${POM_ARTIFACTID}:${TAG_VERSION}"
+
+                sh "docker build -t ${image} ."
+
+            }
+        }
+
+        stage('deploy') {
+            dir('docker') {
+                sh 'docker-compose up -d'
             }
         }
     }
-
-
-    stage('image') {
-        //builda a imagem do projeto
-        script {
-            pom = readMavenPom file: 'pom.xml'
-            env.POM_ARTIFACTID = pom.artifactId
-            env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
-
-            def image = "${POM_ARTIFACTID}:${TAG_VERSION}"
-
-            sh "docker build -t ${image} ."
-
-        }
-    }
-
-    stage('deploy'){
-        dir('docker'){
-            sh 'docker-compose up -d'
-        }
-    }
 }
-
 
 /*
 builda a aplicação, compilação e empacotamento retona o jar
