@@ -9,7 +9,15 @@ pipeline {
 //    options {
 //        buildDiscarder(logRotator(numToKeepStr: '1'))
 //    }
+
+
     stages {
+        stage('checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('build') {
             steps {
                 withMaven('Maven-3.6.0') {
