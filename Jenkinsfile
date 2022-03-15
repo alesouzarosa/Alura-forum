@@ -10,9 +10,24 @@ stages {
     }
 
 
-    stage('build') {
-        //builda o projeto
-        sh 'mvn -B -DskipTests clean package'
+    stage('image') {
+        //builda a imagem do projeto
+        script {
+            pom = readMavenPom file: 'pom.xml'
+            env.POM_ARTIFACTID = pom.artifactId
+            env.TAG_VERSION = new Date().format('yyyy_MM_dd_HHmmss', TimeZone.getTimeZone('GMT-3'))
+
+            def image = "${POM_ARTIFACTID}:${TAG_VERSION}"
+
+            sh "docker build -t ${image} ."
+
+        }
+    }
+
+    stage('deploy'){
+        dir('docker'){
+            sh 'docker-compose up -d'
+        }
     }
 }
 
